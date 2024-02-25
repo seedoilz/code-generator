@@ -21,7 +21,7 @@ public class MainTemplate {
                 sum += num;
             }
 
-            System.out.println("求和结果： + sum);
+            System.out.println("求和结果：" + sum);
         scanner.close();
     }
 }
