@@ -16,12 +16,14 @@ public class Meta {
     private String createTime;
     private FileConfig fileConfig;
     private ModelConfig modelConfig;
+    private boolean git;
 
     @NoArgsConstructor
     @Data
     public static class FileConfig {
         private String inputRootPath;
         private String outputRootPath;
+        private String sourceRootPath;
         private String type;
         private List<FileInfo> files;
 

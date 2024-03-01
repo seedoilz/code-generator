@@ -5,8 +5,10 @@
     "version": "1.0",
     "author": "seedoilz",
     "createTime": "2023-11-22",
+    "git": true,
     "fileConfig": {
-      "inputRootPath": "/Users/seedoilz/Codes/code-generator/code-generator-demo-projects/acm-template-pro",
+      "sourceRootPath": "/Users/seedoilz/Codes/code-generator/code-generator-demo-projects/acm-template-pro",
+      "inputRootPath": ".source/acm-template-pro",
       "outputRootPath": "generated",
       "type": "dir",
       "files": [

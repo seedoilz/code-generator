@@ -1,5 +1,7 @@
-package com.seedoilz.maker.generator.file;
+package ${basePackage}.generator;
 
+import ${basePackage}.generator.StaticFileGenerator;
+import ${basePackage}.generator.DynamicFileGenerator;
 import freemarker.template.TemplateException;
 
 import java.io.File;
@@ -11,26 +13,27 @@ import java.io.IOException;
 public class FileGenerator {
 
     /**
-     * @param model
-     * @return void
-     * @description 生成静态文件和动态文件
-     * @author ruohao.zhang
-     * @date 2024/02/25 15:05
+     * 生成
+     *
+     * @param model 数据模型
+     * @throws TemplateException
+     * @throws IOException
      */
-    public static void doGenerate(Object model) throws IOException, TemplateException {
-        // 当前idea打开的窗口
-        String projectPath = System.getProperty("user.dir");
-        // 找整个项目的根路径 code-generator
-        File parentFile = new File(projectPath).getParentFile();
-        // 输入路径 ACM的示例模板 在 dexcode-generator-demo-projects 目录下
-        String inputPath = new File(parentFile + File.separator + "code-generator-demo-projects/acm-template").getAbsolutePath();
-        // 输出路径
-        String outputPath = projectPath;
-        // 生成静态文件
+    public static void doGenerate(Object model) throws TemplateException, IOException {
+        String inputRootPath = "${fileConfig.inputRootPath}";
+        String outputRootPath = "${fileConfig.outputRootPath}";
+
+        String inputPath;
+        String outputPath;
+    <#list fileConfig.files as fileInfo>
+
+        inputPath = new File(inputRootPath, "${fileInfo.inputPath}").getAbsolutePath();
+        outputPath = new File(outputRootPath, "${fileInfo.outputPath}").getAbsolutePath();
+        <#if fileInfo.generateType == "static">
         StaticFileGenerator.copyFilesByHutool(inputPath, outputPath);
-        // 生成动态文件，会覆盖部分已生成的静态文件
-        String inputDynamicFilePath = projectPath + File.separator + "src/main/resources/templates/MainTemplate.java.ftl";
-        String outputDynamicFilePath = projectPath + File.separator + "acm-template/src/com/yupi/acm/MainTemplate.java";
-        DynamicFileGenerator.doGenerate(inputDynamicFilePath, outputDynamicFilePath, model);
+        <#else >
+        DynamicFileGenerator.doGenerate(inputPath, outputPath, model);
+        </#if>
+    </#list>
     }
 }
