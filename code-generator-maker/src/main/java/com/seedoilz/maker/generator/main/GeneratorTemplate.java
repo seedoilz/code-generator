@@ -8,6 +8,7 @@ import com.seedoilz.maker.generator.ScriptGenerator;
 import com.seedoilz.maker.generator.file.DynamicFileGenerator;
 import com.seedoilz.maker.meta.Meta;
 import com.seedoilz.maker.meta.MetaManager;
+import com.seedoilz.maker.meta.MetaValidator;
 import freemarker.template.TemplateException;
 
 import java.io.File;
@@ -24,6 +25,7 @@ public abstract class GeneratorTemplate {
     public void doGenerate() throws IOException, TemplateException, InterruptedException {
         Meta meta = MetaManager.getMetaObject();
 
+        MetaValidator.doValidaAndFill(meta);
         // 0.输出的根路径
         String projectPath = System.getProperty("user.dir");
         String outputPath = projectPath + File.separator + "generated" + File.separator + meta.getName();
@@ -56,7 +58,7 @@ public abstract class GeneratorTemplate {
     protected String copySource(Meta meta, String outputPath) {
         String sourceRootPath = meta.getFileConfig().getSourceRootPath();
         // 将模板文件复制到项目目录下
-        String sourceCopyDestPath = outputPath + File.separator + "./source";
+        String sourceCopyDestPath = outputPath + File.separator + "/source";
         FileUtil.copy(sourceRootPath, sourceCopyDestPath, false);
         return sourceCopyDestPath;
     }
@@ -143,12 +145,14 @@ public abstract class GeneratorTemplate {
         outputFilePath = outputPath + File.separator + "README.md";
         DynamicFileGenerator.doGenerate(inputFilePath, outputFilePath, meta);
 
+        // .gitignore
+        inputFilePath = inputResourcePath + File.separator + "templates/.gitignore";
+        outputFilePath = outputPath + File.separator + ".gitignore";
+        FileUtil.copy(inputFilePath, outputFilePath, false);
+
         // git初始化
         if (meta.isGit()) {
             gitInit(outputPath);
-            inputFilePath = inputResourcePath + File.separator + "templates/.gitignore";
-            outputFilePath = outputPath + File.separator + ".gitignore";
-            FileUtil.copy(inputFilePath, outputFilePath, false);
         }
     }
 
