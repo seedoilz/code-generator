@@ -22,7 +22,7 @@ public class FileGenerator {
         String projectPath = System.getProperty("user.dir");
         // 找整个项目的根路径 code-generator
         File parentFile = new File(projectPath).getParentFile();
-        // 输入路径 ACM的示例模板 在 dexcode-generator-demo-projects 目录下
+        // 输入路径 ACM的示例模板 在 code-generator-demo-projects 目录下
         String inputPath = new File(parentFile + File.separator + "code-generator-demo-projects/acm-template-pro").getAbsolutePath();
         // 输出路径
         String outputPath = projectPath;
